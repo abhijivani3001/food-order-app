@@ -1,7 +1,8 @@
+import { useEffect, useState } from 'react';
+
 import Card from '../UI/Card';
 import MealItem from './MealItem/MealItem';
 import classes from './AvailableMeals.module.css';
-import { useEffect, useState } from 'react';
 
 const AvailableMeals = () => {
   const [meals, setMeals] = useState([]);
@@ -9,7 +10,6 @@ const AvailableMeals = () => {
   const [httpError, setHttpError] = useState();
 
   useEffect(() => {
-    // we can't use async infront of main function argument in useEffect
     const fetchMeals = async () => {
       const response = await fetch(
         'https://food-order-app-ac0be-default-rtdb.firebaseio.com/meals.json'
@@ -22,6 +22,7 @@ const AvailableMeals = () => {
       const responseData = await response.json();
 
       const loadedMeals = [];
+
       for (const key in responseData) {
         loadedMeals.push({
           id: key,
@@ -30,6 +31,7 @@ const AvailableMeals = () => {
           price: responseData[key].price,
         });
       }
+
       setMeals(loadedMeals);
       setIsLoading(false);
     };
@@ -42,7 +44,7 @@ const AvailableMeals = () => {
 
   if (isLoading) {
     return (
-      <section className={classes['meals-loading']}>
+      <section className={classes.MealsLoading}>
         <p>Loading...</p>
       </section>
     );
@@ -50,7 +52,7 @@ const AvailableMeals = () => {
 
   if (httpError) {
     return (
-      <section className={classes['meals-error']}>
+      <section className={classes.MealsError}>
         <p>{httpError}</p>
       </section>
     );
